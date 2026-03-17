@@ -1,11 +1,24 @@
-function App() {
+import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import { store } from './store';
+import { router } from './routes';
+
+const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <h1 className="text-2xl font-bold text-center pt-10">
-        React Developer Assessment
-      </h1>
-    </div>
+    <Provider store={store}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#1890ff',
+            borderRadius: 6,
+          },
+        }}
+      >
+        <RouterProvider router={router} />
+      </ConfigProvider>
+    </Provider>
   );
-}
+};
 
 export default App;
