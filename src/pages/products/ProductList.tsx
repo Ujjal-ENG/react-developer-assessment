@@ -13,17 +13,18 @@ import './ProductList.scss';
 
 const { Title } = Typography;
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE_OPTIONS = ['10', '20', '50'];
 
 const ProductList: React.FC = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     undefined
   );
 
-  const skip = (currentPage - 1) * PAGE_SIZE;
+  const skip = (currentPage - 1) * pageSize;
 
   const { data: categoriesData, isLoading: categoriesLoading } =
     useGetCategoriesQuery();
@@ -33,7 +34,7 @@ const ProductList: React.FC = () => {
     isLoading: productsLoading,
     isFetching: productsFetching,
   } = useGetProductsQuery(
-    { limit: PAGE_SIZE, skip, category: selectedCategory },
+    { limit: pageSize, skip, category: selectedCategory },
     { skip: !!searchQuery }
   );
 
@@ -42,7 +43,7 @@ const ProductList: React.FC = () => {
     isLoading: searchLoading,
     isFetching: searchFetching,
   } = useSearchProductsQuery(
-    { q: searchQuery, limit: PAGE_SIZE, skip },
+    { q: searchQuery, limit: pageSize, skip },
     { skip: !searchQuery }
   );
 
@@ -200,12 +201,20 @@ const ProductList: React.FC = () => {
         loading={isLoading || isFetching}
         pagination={{
           current: currentPage,
-          pageSize: PAGE_SIZE,
+          pageSize: pageSize,
           total: data?.total || 0,
-          showSizeChanger: false,
+          showSizeChanger: true,
+          pageSizeOptions: PAGE_SIZE_OPTIONS,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} products`,
-          onChange: (page) => setCurrentPage(page),
+          onChange: (page, size) => {
+            if (size !== pageSize) {
+              setPageSize(size);
+              setCurrentPage(1);
+            } else {
+              setCurrentPage(page);
+            }
+          },
         }}
         scroll={{ x: 800 }}
       />
