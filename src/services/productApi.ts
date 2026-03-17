@@ -1,12 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Product, ProductsResponse, Category } from '../types';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { Category, Product, ProductsResponse } from "../types";
 
-const BASE_URL = 'https://dummyjson.com';
+const BASE_URL = import.meta.env.APP_BASE_URL || "https://dummyjson.com";
 
 export const productApi = createApi({
-  reducerPath: 'productApi',
+  reducerPath: "productApi",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  tagTypes: ['Product', 'Products'],
+  tagTypes: ["Product", "Products"],
   endpoints: (builder) => ({
     getProducts: builder.query<
       ProductsResponse,
@@ -18,7 +18,7 @@ export const productApi = createApi({
         }
         return `/products?limit=${limit}&skip=${skip}`;
       },
-      providesTags: ['Products'],
+      providesTags: ["Products"],
     }),
 
     searchProducts: builder.query<
@@ -27,27 +27,30 @@ export const productApi = createApi({
     >({
       query: ({ q, limit = 10, skip = 0 }) =>
         `/products/search?q=${q}&limit=${limit}&skip=${skip}`,
-      providesTags: ['Products'],
+      providesTags: ["Products"],
     }),
 
     getProductById: builder.query<Product, number>({
       query: (id) => `/products/${id}`,
-      providesTags: (_result, _error, id) => [{ type: 'Product', id }],
+      providesTags: (_result, _error, id) => [{ type: "Product", id }],
     }),
 
     getCategories: builder.query<Category[], void>({
-      query: () => '/products/categories',
+      query: () => "/products/categories",
     }),
 
-    updateProduct: builder.mutation<Product, { id: number; data: Partial<Product> }>({
+    updateProduct: builder.mutation<
+      Product,
+      { id: number; data: Partial<Product> }
+    >({
       query: ({ id, data }) => ({
         url: `/products/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: (_result, _error, { id }) => [
-        { type: 'Product', id },
-        'Products',
+        { type: "Product", id },
+        "Products",
       ],
     }),
   }),
