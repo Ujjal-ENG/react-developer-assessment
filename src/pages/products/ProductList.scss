@@ -1,0 +1,35 @@
+.product-list {
+  &__title {
+    margin-bottom: 20px !important;
+  }
+
+  &__filters {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  &__search {
+    width: 320px;
+  }
+
+  &__category-select {
+    min-width: 200px;
+  }
+
+  .product-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #f0f0f0;
+  }
+
+  .ant-table-wrapper {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
