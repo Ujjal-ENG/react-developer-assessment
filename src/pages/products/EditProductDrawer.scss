@@ -1,0 +1,15 @@
+.edit-product-drawer {
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+
+    .ant-input-number {
+      width: 100% !important;
+    }
+  }
+}
